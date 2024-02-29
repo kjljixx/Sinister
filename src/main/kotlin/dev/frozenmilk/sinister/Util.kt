@@ -1,3 +1,4 @@
+@file:JvmName("SinisterUtil")
 package dev.frozenmilk.sinister
 
 import java.lang.reflect.Field
@@ -5,10 +6,12 @@ import java.lang.reflect.Member
 import java.lang.reflect.Method
 import java.lang.reflect.Modifier
 
+@JvmOverloads
 fun Class<*>.getAllMethods(predicate: (Method) -> Boolean = { true } ): List<Method> {
 	return this.declaredMethods.toList().filter(predicate) + (this.superclass?.getAllMethods(predicate) ?: emptyList())
 }
 
+@JvmOverloads
 fun Class<*>.getAllFields(predicate: (Field) -> Boolean = { true } ): List<Field> {
 	return this.declaredFields.toList().filter(predicate) + (this.superclass?.getAllFields(predicate) ?: emptyList())
 }
