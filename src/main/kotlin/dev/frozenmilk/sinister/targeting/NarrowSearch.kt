@@ -5,6 +5,7 @@ package dev.frozenmilk.sinister.targeting
  */
 open class NarrowSearch : WideSearch() {
 	init {
-		exclude("dev.frozenmilk")
+		exclude("org.firstinspires")
+		exclude("com.qualcomm")
 	}
 }
