@@ -3,13 +3,12 @@
 package dev.frozenmilk.sinister
 
 import android.content.Context
-import com.qualcomm.ftccommon.FtcEventLoop
 import com.qualcomm.robotcore.util.RobotLog
 import dalvik.system.DexFile
+import dev.frozenmilk.sinister.apphooks.OnCreateFilter
 import dev.frozenmilk.sinister.targeting.FullSearch
 import dev.frozenmilk.util.cell.LateInitCell
-import org.firstinspires.ftc.ftccommon.external.OnCreateEventLoop
-import org.firstinspires.ftc.robotcore.internal.opmode.InstantRunHelper
+import org.firstinspires.ftc.ftccommon.external.OnCreate
 
 private object Sinister {
 	private var dexFile by LateInitCell<DexFile>()
@@ -19,18 +18,23 @@ private object Sinister {
 	private var run = false
 	private const val TAG = "Sinister"
 
-	@OnCreateEventLoop
+	@OnCreate
 	@JvmStatic
-	@Suppress("UNUSED_PARAMETER")
-	fun onCreate( context: Context, ftcEventLoop: FtcEventLoop) {
+	@Suppress("unused")
+	fun onCreate(context: Context) {
 		RobotLog.vv(TAG, "attempting boot on create")
-		if (run) return
+		if (run) {
+			OnCreateFilter.onCreate(context)
+			return
+		}
 		RobotLog.vv(TAG, "not yet booted, booting")
 		this.context = context
 		dexFile = DexFile(context.packageCodePath)
 		selfBoot()
 		run = true
 		dexFile.close()
+		OnCreateFilter.onCreate(context)
+		RobotLog.vv(TAG, "finished boot process")
 	}
 
 	private fun allClassNames(): List<String> {
@@ -44,14 +48,11 @@ private object Sinister {
 			try {
 				return@mapNotNull Class.forName(it, false, loader) to it
 			}
-			catch (_: ClassNotFoundException) {}
-			catch (_: NoClassDefFoundError) {}
-
-			var className = it
-			if (className.contains('$')) {
-				className = className.substring(0, className.indexOf("$") /* -1 */);
+			catch (e: Throwable) {
+				RobotLog.ee(TAG, "Error occurred while locating class: $e")
 			}
-			rootSearch.exclude(className)
+
+			rootSearch.exclude(it)
 
 			null
 		}
@@ -80,13 +81,19 @@ private object Sinister {
 
 		filters.forEach {
 			RobotLog.vv(TAG, "found filter ${it.javaClass.simpleName}")
+			it.init()
 		}
 
 		RobotLog.vv(TAG, "running filters")
 		allClasses.forEach {
 			filters.forEach { filter ->
-				if (filter.targets.determineInclusion(it.second)) {
-					filter.filter(it.first)
+				try {
+					 if (filter.targets.determineInclusion(it.second)) {
+						 filter.filter(it.first)
+					 }
+				}
+				catch (e: Throwable) {
+					RobotLog.ee(TAG, "Error occurred while running Sinister filters : ${it.second} : $e")
 				}
 			}
 		}
