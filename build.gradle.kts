@@ -45,6 +45,8 @@ dependencies {
 
 	compileOnly("org.firstinspires.ftc:RobotCore:9.0.1")
 	compileOnly("org.firstinspires.ftc:FtcCommon:9.0.1")
+
+	testImplementation("org.firstinspires.ftc:FtcCommon:9.0.1")
 }
 
 publishing {
