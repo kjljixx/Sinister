@@ -51,5 +51,5 @@ class NoLoaderException : Exception("Tried to load a class with no class loader"
 
 class NoPreloadException : Exception("Tried to load a class that isn't allowed to be preloaded")
 
-fun Class<*>.inheritsAnnotation(annotation: Class<out Annotation>): Boolean = if (isAnnotationPresent(annotation)) true else interfaces.any { it.inheritsAnnotation(annotation) }
+fun Class<*>.inheritsAnnotation(annotation: Class<out Annotation>): Boolean = if (isAnnotationPresent(annotation)) true else interfaces.any { it.inheritsAnnotation(annotation) } || (superclass?.inheritsAnnotation(annotation) ?: false)
 
