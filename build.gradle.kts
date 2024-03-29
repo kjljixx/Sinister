@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-	namespace = "dev.frozenmilk.dairy.sinister"
+	namespace = "dev.frozenmilk.sinister"
 	compileSdk = 29
 
 	defaultConfig {
@@ -43,16 +43,16 @@ dependencies {
 
 	api(project(":Util"))
 
-	compileOnly("org.firstinspires.ftc:RobotCore:9.0.1")
-	compileOnly("org.firstinspires.ftc:FtcCommon:9.0.1")
+	compileOnly("org.firstinspires.ftc:RobotCore:9.1.0")
+	compileOnly("org.firstinspires.ftc:FtcCommon:9.1.0")
 
-	testImplementation("org.firstinspires.ftc:FtcCommon:9.0.1")
+	testImplementation("org.firstinspires.ftc:FtcCommon:9.1.0")
 }
 
 publishing {
 	publications {
 		register<MavenPublication>("release") {
-			groupId = "dev.frozenmilk.dairy"
+			groupId = "dev.frozenmilk"
 			artifactId = "Sinister"
 			version = "v0.0.0"
 
