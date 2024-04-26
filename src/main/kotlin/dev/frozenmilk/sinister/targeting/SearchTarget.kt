@@ -43,29 +43,14 @@ abstract class SearchTarget(
 	}
 
 	private fun setStatus(target: String, status: Inclusion) {
-		var targetPlumb = targets
-		target.split('.')
-				.forEach {
-					targetPlumb.putIfAbsent(it, Inclusion.INHERIT)
-					targetPlumb = targetPlumb[it]!!
-				}
-		targetPlumb.contents = status
+		targets.getOrDefault(target.split('.', '$'), Inclusion.INHERIT).contents = status
 	}
 
-	fun determineInclusion(path: String) : Boolean {
-		var targetPlumb = targets
-		var inclusion = targets.contents
-		path.split('.')
-				.forEach {
-					targetPlumb = targetPlumb[it] ?: return inclusion == Inclusion.INCLUDE
-					when (val contents = targetPlumb.contents) {
-						Inclusion.INCLUDE,
-						Inclusion.EXCLUDE -> {
-							inclusion = contents
-						}
-						Inclusion.INHERIT -> {}
-					}
-				}
+	fun determineInclusion(path: Collection<String>) : Boolean {
+		val inclusion = targets[path] ?: return determineInclusion(path.take(path.size - 1))
+		if (inclusion == Inclusion.INHERIT) return determineInclusion(path.take(path.size - 1))
 		return inclusion == Inclusion.INCLUDE
 	}
+
+	fun determineInclusion(path: String) = determineInclusion(path.split('.', '$'))
 }

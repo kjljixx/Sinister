@@ -38,7 +38,7 @@ private object Sinister {
 	}
 
 	private fun allClassNames(): List<String> {
-		return dexFile.entries().toList()// + InstantRunHelper.getAllClassNames(context)
+		return dexFile.entries().toList()
 	}
 
 	private fun allClasses(): List<Pair<Class<*>, String>> {
@@ -69,7 +69,7 @@ private object Sinister {
 						RobotLog.vv(TAG, "preloading: ${it.first.simpleName}")
 						return@mapNotNull it
 					}
-					catch (_: Exception) {
+					catch (_: Throwable) {
 						null
 					}
 				}
@@ -93,7 +93,7 @@ private object Sinister {
 					 }
 				}
 				catch (e: Throwable) {
-					RobotLog.ee(TAG, "Error occurred while running Sinister filters : ${it.second} : $e")
+					RobotLog.ee(TAG, "Error occurred while running SinisterFilter: ${filter::class.simpleName} | ${filter}\nFiltering Class:${it.second}\nError: $e\nStackTrace: ${e.stackTraceToString()}")
 				}
 			}
 		}

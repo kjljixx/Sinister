@@ -13,11 +13,6 @@ class SDKMethods {
 	fun onCreate() {
 		Assert.assertEquals(OnCreateEventLoopFilter::class.java.staticInstancesOf(SinisterFilter::class.java), listOf(OnCreateEventLoopFilter))
 	}
-
-	@Test
-	fun t() {
-
-	}
 }
 
 private object OnCreateImpl : OnCreate {
