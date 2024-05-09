@@ -10,7 +10,7 @@ class Filtering {
 	}
 
 	@Test
-	fun t() {
+	fun inclusions2() {
 		val search = FullSearch()
 		Assert.assertEquals(false, search.determineInclusion("kotlin.io.path.PathsKt__PathRecursiveFunctionsKt\$copyToRecursively\$5"))
 	}
