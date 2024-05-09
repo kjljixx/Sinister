@@ -4,6 +4,7 @@ package dev.frozenmilk.sinister
 
 import android.content.Context
 import com.qualcomm.robotcore.util.RobotLog
+import com.qualcomm.robotcore.util.ThreadPool
 import dalvik.system.DexFile
 import dev.frozenmilk.sinister.apphooks.OnCreateFilter
 import dev.frozenmilk.sinister.targeting.FullSearch
@@ -85,15 +86,20 @@ private object Sinister {
 		}
 
 		RobotLog.vv(TAG, "running filters")
+		val executor = ThreadPool.getDefault()
 		allClasses.forEach {
 			filters.forEach { filter ->
-				try {
-					 if (filter.targets.determineInclusion(it.second)) {
-						 filter.filter(it.first)
-					 }
-				}
-				catch (e: Throwable) {
-					RobotLog.ee(TAG, "Error occurred while running SinisterFilter: ${filter::class.simpleName} | ${filter}\nFiltering Class:${it.second}\nError: $e\nStackTrace: ${e.stackTraceToString()}")
+				executor.submit {
+					try {
+						if (filter.targets.determineInclusion(it.second)) {
+							synchronized(filter) {
+								filter.filter(it.first)
+							}
+						}
+					}
+					catch (e: Throwable) {
+						RobotLog.ee(TAG, "Error occurred while running SinisterFilter: ${filter::class.simpleName} | ${filter}\nFiltering Class:${it.second}\nError: $e\nStackTrace: ${e.stackTraceToString()}")
+					}
 				}
 			}
 		}
