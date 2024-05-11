@@ -16,7 +16,7 @@ abstract class CollectImplementationsFilter<T: Any>(private val clazz: Class<T>)
 		clazz.staticInstancesOf(this.clazz)
 				.forEach {
 					found.add(it)
-					RobotLog.vv(tag, "found implementing instance: ${it::class.java.simpleName}")
+					RobotLog.vv(tag, "found implementing instance: ${it::class.java.name}")
 				}
 	}
 }
