@@ -5,15 +5,16 @@ import java.lang.reflect.Field
 import java.lang.reflect.Member
 import java.lang.reflect.Method
 import java.lang.reflect.Modifier
+import java.util.function.Predicate
 
 @JvmOverloads
-fun Class<*>.getAllMethods(predicate: (Method) -> Boolean = { true } ): List<Method> {
-	return this.declaredMethods.toList().filter(predicate) + (this.superclass?.getAllMethods(predicate) ?: emptyList())
+fun Class<*>.getAllMethods(predicate: Predicate<Method> = Predicate { true } ): List<Method> {
+	return this.declaredMethods.toList().filter(predicate::test) + (this.superclass?.getAllMethods(predicate) ?: emptyList())
 }
 
 @JvmOverloads
-fun Class<*>.getAllFields(predicate: (Field) -> Boolean = { true } ): List<Field> {
-	return this.declaredFields.toList().filter(predicate) + (this.superclass?.getAllFields(predicate) ?: emptyList())
+fun Class<*>.getAllFields(predicate: Predicate<Field> = Predicate { true } ): List<Field> {
+	return this.declaredFields.toList().filter(predicate::test) + (this.superclass?.getAllFields(predicate) ?: emptyList())
 }
 
 fun Member.isInterface() : Boolean = Modifier.isInterface(modifiers)
@@ -53,3 +54,7 @@ class NoPreloadException : Exception("Tried to load a class that isn't allowed t
 
 fun Class<*>.inheritsAnnotation(annotation: Class<out Annotation>): Boolean = if (isAnnotationPresent(annotation)) true else interfaces.any { it.inheritsAnnotation(annotation) } || (superclass?.inheritsAnnotation(annotation) ?: false)
 
+@JvmOverloads
+fun Class<*>.getAllAnnotations(predicate: Predicate<Annotation> = Predicate { true } ): List<Annotation> {
+	return this.declaredAnnotations.toList().filter(predicate::test) + (this.superclass?.getAllAnnotations(predicate) ?: emptyList())
+}
