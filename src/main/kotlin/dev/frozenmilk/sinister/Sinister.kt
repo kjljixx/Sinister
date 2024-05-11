@@ -10,6 +10,7 @@ import dev.frozenmilk.sinister.apphooks.OnCreateFilter
 import dev.frozenmilk.sinister.targeting.FullSearch
 import dev.frozenmilk.util.cell.LateInitCell
 import org.firstinspires.ftc.ftccommon.external.OnCreate
+import java.util.concurrent.CompletableFuture
 
 private object Sinister {
 	private var dexFile by LateInitCell<DexFile>()
@@ -87,9 +88,10 @@ private object Sinister {
 
 		RobotLog.vv(TAG, "running filters")
 		val executor = ThreadPool.getDefault()
+		val tasks = mutableListOf<CompletableFuture<*>>()
 		allClasses.forEach {
 			filters.forEach { filter ->
-				executor.submit {
+				CompletableFuture.runAsync({
 					try {
 						if (filter.targets.determineInclusion(it.second)) {
 							synchronized(filter) {
@@ -100,9 +102,10 @@ private object Sinister {
 					catch (e: Throwable) {
 						RobotLog.ee(TAG, "Error occurred while running SinisterFilter: ${filter::class.simpleName} | ${filter}\nFiltering Class:${it.second}\nError: $e\nStackTrace: ${e.stackTraceToString()}")
 					}
-				}
+				}, executor)
 			}
 		}
+		CompletableFuture.allOf(*tasks.toTypedArray())
 		RobotLog.vv(TAG, "...booted")
 	}
 }
