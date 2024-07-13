@@ -14,10 +14,6 @@ import dev.frozenmilk.sinister.Preload
 @JvmDefaultWithCompatibility
 fun interface OnCreateMenu {
 	fun onCreateMenu(context: Context, menu: Menu)
-	fun registerInstance(): OnCreateMenu {
-		OnCreateMenuFilter.register(this)
-		return this
-	}
 }
 
 @Suppress("unused")

@@ -14,17 +14,13 @@ import dev.frozenmilk.sinister.Preload
 @JvmDefaultWithCompatibility
 fun interface WebHandlerRegistrar {
 	fun webHandlerRegistrar(context: Context, webHandlerManager: WebHandlerManager)
-	fun registerInstance(): WebHandlerRegistrar {
-		WebHandlerRegistrarFilter.register(this)
-		return this
-	}
 }
 
 @Suppress("unused")
 object WebHandlerRegistrarFilter : HookFilter<WebHandlerRegistrar>(WebHandlerRegistrar::class.java) {
 	@JvmStatic
 	@org.firstinspires.ftc.ftccommon.external.WebHandlerRegistrar
-	fun webHandlerRegistrar(context: Context , webHandlerManager: WebHandlerManager ) {
+	fun webHandlerRegistrar(context: Context, webHandlerManager: WebHandlerManager) {
 		allHooks.forEach { it.webHandlerRegistrar(context, webHandlerManager) }
 	}
 }

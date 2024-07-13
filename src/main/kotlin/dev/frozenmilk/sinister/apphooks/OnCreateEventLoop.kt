@@ -14,10 +14,6 @@ import dev.frozenmilk.sinister.Preload
 @JvmDefaultWithCompatibility
 fun interface OnCreateEventLoop {
 	fun onCreateEventLoop(context: Context, ftcEventLoop: FtcEventLoop)
-	fun registerInstance(): OnCreateEventLoop {
-		OnCreateEventLoopFilter.register(this)
-		return this
-	}
 }
 
 object OnCreateEventLoopFilter : HookFilter<OnCreateEventLoop>(OnCreateEventLoop::class.java) {

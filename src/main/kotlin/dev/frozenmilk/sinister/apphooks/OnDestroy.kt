@@ -13,10 +13,6 @@ import dev.frozenmilk.sinister.Preload
 @JvmDefaultWithCompatibility
 fun interface OnDestroy {
 	fun onDestroy(context: Context)
-	fun registerInstance(): OnDestroy {
-		OnDestroyFilter.register(this)
-		return this
-	}
 }
 
 @Suppress("unused")

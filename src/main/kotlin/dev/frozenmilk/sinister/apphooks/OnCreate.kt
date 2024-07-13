@@ -13,10 +13,6 @@ import dev.frozenmilk.sinister.Preload
 @JvmDefaultWithCompatibility
 fun interface OnCreate {
 	fun onCreate(context: Context)
-	fun registerInstance(): OnCreate {
-		OnCreateFilter.register(this)
-		return this
-	}
 }
 
 @Suppress("unused")

@@ -13,10 +13,6 @@ import dev.frozenmilk.sinister.Preload
 @JvmDefaultWithCompatibility
 fun interface OpModeRegistrar {
 	fun registerOpModes(opModeManager: AnnotatedOpModeManager)
-	fun registerInstance(): OpModeRegistrar {
-		OpModeRegistrarFilter.register(this)
-		return this
-	}
 }
 
 @Suppress("unused")
