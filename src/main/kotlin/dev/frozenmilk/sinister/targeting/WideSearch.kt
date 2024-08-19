@@ -5,15 +5,11 @@ package dev.frozenmilk.sinister.targeting
  */
 open class WideSearch : FullSearch() {
 	init {
-		exclude("android")
-		exclude("androidx")
-		exclude("com.android")
 		exclude("com.google")
 		exclude("com.qualcomm.robotcore.wifi")
 		exclude("com.sun")
 		exclude("gnu.kawa.swingviews")
 		exclude("io.netty")
-		exclude("java")
 		exclude("kawa")
 		exclude("org.apache")
 		exclude("org.checkerframework")
