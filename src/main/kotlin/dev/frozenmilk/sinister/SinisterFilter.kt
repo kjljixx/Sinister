@@ -11,6 +11,11 @@ import dev.frozenmilk.sinister.targeting.SearchTarget
 @JvmDefaultWithCompatibility
 interface SinisterFilter {
 	/**
+	 * synchronisation object
+	 */
+	val lock: Any
+		get() = this
+	/**
 	 * items that should be ignored
 	 */
 	val targets: SearchTarget
