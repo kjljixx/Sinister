@@ -43,10 +43,10 @@ dependencies {
 
 	api(project(":Util"))
 
-	compileOnly("org.firstinspires.ftc:RobotCore:9.1.0")
-	compileOnly("org.firstinspires.ftc:FtcCommon:9.1.0")
+	compileOnly("org.firstinspires.ftc:RobotCore:10.0.0")
+	compileOnly("org.firstinspires.ftc:FtcCommon:10.0.0")
 
-	testImplementation("org.firstinspires.ftc:FtcCommon:9.1.0")
+	testImplementation("org.firstinspires.ftc:FtcCommon:10.0.0")
 }
 
 publishing {
