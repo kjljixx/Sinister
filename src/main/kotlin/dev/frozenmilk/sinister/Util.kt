@@ -55,6 +55,17 @@ class NoPreloadException : Exception("Tried to load a class that isn't allowed t
 fun Class<*>.inheritsAnnotation(annotation: Class<out Annotation>): Boolean = if (isAnnotationPresent(annotation)) true else interfaces.any { it.inheritsAnnotation(annotation) } || (superclass?.inheritsAnnotation(annotation) ?: false)
 
 @JvmOverloads
+fun <A: Annotation> Class<*>.getAllAnnotationsByType(cls: Class<A>, predicate: Predicate<A> = Predicate { true } ): List<A> {
+	val res = this.getAnnotationsByType(cls).filter(predicate::test) + this.interfaces.flatMap { it.getAllAnnotationsByType(cls, predicate) }
+	val superRes = this.superclass?.getAllAnnotationsByType(cls, predicate)
+	return if (superRes != null) res + superRes
+	else res
+}
+
+@JvmOverloads
 fun Class<*>.getAllAnnotations(predicate: Predicate<Annotation> = Predicate { true } ): List<Annotation> {
-	return this.declaredAnnotations.toList().filter(predicate::test) + (this.superclass?.getAllAnnotations(predicate) ?: emptyList())
+	val res = this.declaredAnnotations.filter(predicate::test) + this.interfaces.flatMap { it.getAllAnnotations(predicate) }
+	val superRes = this.superclass?.getAllAnnotations(predicate)
+	return if (superRes != null) res + superRes
+	else res
 }
