@@ -28,6 +28,8 @@ private object Sinister {
 	fun onCreate(context: Context) {
 		RobotLog.vv(TAG, "attempting boot on create")
 		if (run) {
+			RobotLog.vv(TAG, "already booted")
+			RobotLog.vv(TAG, "finished boot process")
 			OnCreateFilter.onCreate(context)
 			return
 		}
