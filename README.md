@@ -1,4 +1,4 @@
-<a href="/Sinister" target="_blank">
+<a href="https://repo.dairy.foundation/#/releases/dev/frozenmilk/Sinister" target="_blank">
 <img src="https://repo.dairy.foundation/api/badge/latest/releases/dev/frozenmilk/Sinister?color=40c14a&name=Sinister" />
 </a>
 
