@@ -19,6 +19,6 @@ open class WideSearch : FullSearch() {
 		exclude("org.tensorflow")
 		exclude("org.threeten")
 		exclude("com.journeyapps")
-		exclude("com.jacksonxml")
+		exclude("com.fasterxml")
 	}
 }
