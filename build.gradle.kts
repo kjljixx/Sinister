@@ -1,13 +1,15 @@
+import com.android.builder.symbols.exportToCompiledJava
+
 plugins {
 	id("com.android.library")
-	id("kotlin-android")
+	id("org.jetbrains.kotlin.android")
 	id("org.jetbrains.dokka") version "1.9.10"
 	id("maven-publish")
 }
 
 android {
 	namespace = "dev.frozenmilk.sinister"
-	compileSdk = 29
+	compileSdk = 30
 
 	defaultConfig {
 		minSdk = 24
@@ -25,8 +27,8 @@ android {
 		}
 	}
 	compileOptions {
-		sourceCompatibility = JavaVersion.VERSION_1_8
-		targetCompatibility = JavaVersion.VERSION_1_8
+		sourceCompatibility = JavaVersion.VERSION_17
+		targetCompatibility = JavaVersion.VERSION_17
 
 		kotlin {
 			compilerOptions {
@@ -36,12 +38,20 @@ android {
 	}
 }
 
+repositories {
+	mavenCentral()
+	google() // Needed for androidx
+	maven {
+		url = uri("https://repo.dairy.foundation/releases")
+	}
+}
+
 dependencies {
 	//noinspection GradleDependency
 	implementation("androidx.appcompat:appcompat:1.2.0")
 	testImplementation("junit:junit:4.13.2")
 
-	api(project(":Util"))
+	implementation("dev.frozenmilk.dairy:Util:1.1.1")
 
 	compileOnly("org.firstinspires.ftc:RobotCore:10.0.0")
 	compileOnly("org.firstinspires.ftc:FtcCommon:10.0.0")
@@ -63,8 +73,8 @@ publishing {
 	publications {
 		register<MavenPublication>("release") {
 			groupId = "dev.frozenmilk"
-			artifactId = "Sinister"
-			version = "1.0.0"
+			artifactId = "Sinister-local"
+			version = "1.0.0-local"
 
 			afterEvaluate {
 				from(components["release"])
